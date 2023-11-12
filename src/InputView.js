@@ -1,4 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
+import { MENU } from './constant/Constant.js';
 
 export default InputView = {
   async readDate() {
@@ -13,6 +14,22 @@ export default InputView = {
         Console.print(error.message);
       }
     }
+  },
+  async readMenu() {
+    while (true) {
+      try {
+        const input = await Console.readLineAsync("주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)\n");
+        if (input.trim().length === 0) throw new Error("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        const menu = input.split(",").map((el) => el.split("-"));
+        menu.forEach((order) => {
+          if (MENU[order[0]] === undefined) throw new Error("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+          if (!Number.isInteger(order[1]) || order[1] < 1) throw new Error("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        })
+        if (menu.length !== new Set(menu.map((order) => order[0]))) throw new Error("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        return menu;
+      } catch (error) {
+        Console.print(error.message);
+      }
+    }
   }
-  // ...
 }
