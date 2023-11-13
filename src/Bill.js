@@ -48,6 +48,14 @@ class Bill {
     if (this.isGiveaway(this.calculateTotalPrice(order))) return this.calculateWholeDiscount(order, day) + 25000;
     return this.calculateWholeDiscount(order, day);
   }
+
+  static calculateBadge(order, day) {
+    const wholeReward = this.calculateWholeReward(order, day);
+    if (wholeReward >= 20000) return "산타";
+    if (wholeReward >= 10000) return "트리";
+    if (wholeReward >= 5000) return "별";
+    return "없음";
+  }
 }
 
 export default Bill;
