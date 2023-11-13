@@ -1,8 +1,52 @@
 import { MENU } from './constant/Constant.js';
 
 class Bill {
-  calculateTotalOrder(order) {
+  static calculateTotalPrice(order) {
     return order.reduce((acc, cur) => acc + MENU[cur[0]].PRICE * cur[1], 0);
+  }
+
+  static isGiveaway(price) {
+    return price >= 120000;
+  }
+
+  static isWeekend(day) {
+    return day % 7 === 1 ||  day % 7 === 2;
+  }
+
+  static isWeekday(day) {
+    return !this.isWeekend(day);
+  }
+
+  static isSpecialDay(day) {
+    return day % 7 === 3 || day === 25;
+  }
+
+  static calculateWeekendDiscount(order, day) {
+    return order.reduce((acc, cur) => {
+      if (this.isWeekend(day) && MENU[cur[0]].TYPE === "메인") return acc + 2023;
+      return acc;
+    }, 0);
+  }
+  
+  static calculateWeekdayDiscount(order, day) {
+    return order.reduce((acc, cur) => {
+      if (this.isWeekday(day) && MENU[cur[0]].TYPE === "디저트") return acc + 2023;
+      return acc;
+    }, 0);
+  }
+
+  static calculateSpecialDiscount(day) {
+    if (this.isSpecial(day)) return 1000;
+    return 0;
+  }
+
+  static calculateWholeDiscount(order, day) {
+    return this.calculateWeekendDiscount(order, day) + this.calculateWeekdayDiscount(order, day) + this.calculateSpecialDiscount(day);
+  }
+
+  static calculateWholeReward(order, day) {
+    if (this.isGiveaway(this.calculateTotalPrice(order))) return this.calculateWholeDiscount(order, day) + 25000;
+    return this.calculateWholeDiscount(order, day);
   }
 }
 
