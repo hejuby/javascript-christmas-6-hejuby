@@ -5,8 +5,8 @@ class Bill {
     return order.reduce((acc, cur) => acc + MENU[cur[0]].PRICE * cur[1], 0);
   }
 
-  static isGiveaway(price) {
-    return price >= 120000;
+  static isGiveaway(order) {
+    return this.calculateTotalPrice(order) >= 120000;
   }
 
   static isWeekend(day) {
@@ -19,6 +19,11 @@ class Bill {
 
   static isSpecialDay(day) {
     return day % 7 === 3 || day === 25;
+  }
+
+  static calculateDDayDiscount(day) {
+    if (day <= 25) return 1000 + (day-1) * 100;
+    return 0;
   }
 
   static calculateWeekendDiscount(order, day) {
