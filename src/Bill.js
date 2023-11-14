@@ -14,11 +14,33 @@ class Bill {
   }
 
   static isWeekend(day) {
-    return day % 7 === 1 ||  day % 7 === 2;
+    return day % 7 === 1 || day % 7 === 2;
   }
 
   static isWeekday(day) {
     return !this.isWeekend(day);
+  }
+
+  static hasMainMenu(orders) {
+    orders.forEach((order) => {
+      if (MENU[order[0]].TYPE === "메인") return true;
+    });
+    return false;
+  }
+
+  static hasDessertMenu(orders) {
+    orders.forEach((order) => {
+      if (MENU[order[0]].TYPE === "디저트") return true;
+    });
+    return false;
+  }
+
+  static isWeekendDiscount(order, day) {
+    return this.isWeekend(day) && this.hasMainMenu(order);
+  }
+
+  static isWeekdayDiscount(order, day) {
+    return this.isWeekday(day) && this.hasDessertMenu(order);
   }
 
   static isSpecialDay(day) {
