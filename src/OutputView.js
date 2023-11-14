@@ -17,5 +17,9 @@ export default OutputView = {
   printTotalPrice(order) {
     Console.print("<할인 전 총주문 금액>");
     Console.print(`${Bill.calculateTotalPrice(order)}원\n`);
+  },
+  printGiveaway(order) {
+    Console.print("<증정 메뉴>");
+    Console.print(`${Bill.calculateGiveaway(order)}\n`);
   }
 }

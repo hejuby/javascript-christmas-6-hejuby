@@ -26,6 +26,11 @@ class Bill {
     return 0;
   }
 
+  static calculateGiveaway(order) {
+    if (this.isGiveaway(order)) return "샴페인 1개";
+    return "없음";
+  }
+
   static calculateWeekendDiscount(order, day) {
     return order.reduce((acc, cur) => {
       if (this.isWeekend(day) && MENU[cur[0]].TYPE === "메인") return acc + 2023;
