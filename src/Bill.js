@@ -47,6 +47,10 @@ class Bill {
     return day % 7 === 3 || day === 25;
   }
 
+  static isDiscount(order, day) {
+    return this.isDDayDiscount(day) || this.isGiveaway(order) || this.isWeekendDiscount(order, day) || this.isWeekdayDiscount(order, day) || this.isSpecialDay(day);
+  }
+
   static calculateDDayDiscount(day) {
     if (this.isDDayDiscount(day)) return 1000 + (day-1) * 100;
     return 0;
