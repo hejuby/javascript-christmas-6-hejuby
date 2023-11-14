@@ -21,5 +21,15 @@ export default OutputView = {
   printGiveaway(order) {
     Console.print("<증정 메뉴>");
     Console.print(`${Bill.calculateGiveaway(order)}\n`);
+  },
+  printWholeReward(order, day) {
+    Console.print("<혜택 내역>");
+    if (Bill.isDDayDiscount(day)) Console.print(`크리스마스 디데이 할인: -${Number.toLocaleString(Bill.calculateDDayDiscount(day))}원`);
+    if (Bill.isWeekdayDiscount(order, day)) Console.print(`평일 할인: -${Number.toLocaleString(Bill.calculateWeekdayDiscount(order, day))}원`);
+    if (Bill.isWeekendDiscount(order, day)) Console.print(`주말 할인: -${Number.toLocaleString(Bill.calculateWeekendDiscount(order, day))}원`);
+    if (Bill.isSpecialDay(day)) Console.print(`특별 할인: -${Number.toLocaleString(Bill.calculateSpecialDiscount(day))}원`);
+    if (Bill.isGiveaway(order)) Console.print(`증정 이벤트: -25,000원`);
+    if (!Bill.calculateWholeReward(order, day)) Console.print("없음");
+    Console.print("");
   }
 }
