@@ -80,20 +80,20 @@ class Bill {
     return 0;
   }
 
-  static calculateWholeDiscount(order, day) {
+  static calculateTotalDiscount(order, day) {
     return this.calculateDDayDiscount(day) + this.calculateWeekendDiscount(order, day) + this.calculateWeekdayDiscount(order, day) + this.calculateSpecialDiscount(day);
   }
 
-  static calculateWholeReward(order, day) {
-    if (this.isGiveaway(this.calculateTotalPrice(order))) return this.calculateWholeDiscount(order, day) + 25000;
-    return this.calculateWholeDiscount(order, day);
+  static calculateTotalReward(order, day) {
+    if (this.calculateGiveaway(order)) return this.calculateTotalDiscount(order, day) + 25000;
+    return this.calculateTotalDiscount(order, day);
   }
 
-  static calculateBadge(order, day) {
-    const wholeReward = this.calculateWholeReward(order, day);
-    if (wholeReward >= 20000) return "산타";
-    if (wholeReward >= 10000) return "트리";
-    if (wholeReward >= 5000) return "별";
+  static calculateEventBadge(order, day) {
+    const TotalReward = this.calculateTotalReward(order, day);
+    if (TotalReward >= 20000) return "산타";
+    if (TotalReward >= 10000) return "트리";
+    if (TotalReward >= 5000) return "별";
     return "없음";
   }
 }

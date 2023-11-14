@@ -16,20 +16,36 @@ export default OutputView = {
   },
   printTotalPrice(order) {
     Console.print("<할인 전 총주문 금액>");
-    Console.print(`${Bill.calculateTotalPrice(order)}원\n`);
+    Console.print(`${Number.toLocaleString(Bill.calculateTotalPrice(order))}원\n`);
   },
   printGiveaway(order) {
     Console.print("<증정 메뉴>");
     Console.print(`${Bill.calculateGiveaway(order)}\n`);
   },
-  printWholeReward(order, day) {
+  printTotalReward(order, day) {
     Console.print("<혜택 내역>");
     if (Bill.isDDayDiscount(day)) Console.print(`크리스마스 디데이 할인: -${Number.toLocaleString(Bill.calculateDDayDiscount(day))}원`);
     if (Bill.isWeekdayDiscount(order, day)) Console.print(`평일 할인: -${Number.toLocaleString(Bill.calculateWeekdayDiscount(order, day))}원`);
     if (Bill.isWeekendDiscount(order, day)) Console.print(`주말 할인: -${Number.toLocaleString(Bill.calculateWeekendDiscount(order, day))}원`);
     if (Bill.isSpecialDay(day)) Console.print(`특별 할인: -${Number.toLocaleString(Bill.calculateSpecialDiscount(day))}원`);
     if (Bill.isGiveaway(order)) Console.print(`증정 이벤트: -25,000원`);
-    if (!Bill.calculateWholeReward(order, day)) Console.print("없음");
+    if (!Bill.isDiscount(order, day)) Console.print("없음");
     Console.print("");
+  },
+  printTotalReward(order, day) {
+    Console.print("<총혜택 금액>");
+    if (Bill.isDiscount(order, day)) {
+      Console.print(`-${Number.toLocaleString(Bill.calculateTotalReward(order, day))}원\n`);
+      return;
+    }
+    Console.print("0원\n");
+  },
+  printDiscountPrice(order, day) {
+    Console.print("<할인 후 예상 결제 금액>");
+    Console.print(`${Number.toLocaleString(Bill.calculateTotalPrice(order)-Bill.calculateTotalDiscount(order, day))}원\n`);
+  },
+  printEventBadge(order, day) {
+    Console.print("<12월 이벤트 배지>");
+    Console.print(Bill.calculateEventBadge(order, day));
   }
 }
