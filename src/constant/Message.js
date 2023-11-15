@@ -5,7 +5,7 @@ export const MESSAGE = {
   REWARD_HEADER_PREFIX: "12월 ",
   REWARD_HEADER_SUFFIX: "일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n",
   MENU_TITLE: "<주문 메뉴>",
-  MENU_SUFFIX: "개\n",
+  MENU_SUFFIX: "개",
   TOTAL_PRICE_TITLE: "<할인 전 총주문 금액>",
   GIVEAWAY_TITLE: "<증정 메뉴>",
   REWARD_LIST_TITLE: "<혜택 내역>",
