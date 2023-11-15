@@ -22,17 +22,11 @@ class Bill {
   }
 
   static hasMainMenu(orders) {
-    orders.forEach((order) => {
-      if (MENU[order[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.MAIN_DISH) return true;
-    });
-    return false;
+    return Boolean(orders.filter((order) => MENU[order[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.MAIN_DISH).length);
   }
 
   static hasDessertMenu(orders) {
-    orders.forEach((order) => {
-      if (MENU[order[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.DESSERT) return true;
-    });
-    return false;
+    return Boolean(orders.filter((order) => MENU[order[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.DESSERT).length);
   }
 
   static isWeekendDiscount(order, date) {
