@@ -63,14 +63,14 @@ class Bill {
 
   static calculateWeekendDiscount(order, date) {
     return order.reduce((acc, cur) => {
-      if (this.isWeekend(date) && MENU[cur[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.MAIN_DISH) return acc + CONSTANT.WEEKEND_DISCOUNT;
+      if (this.isWeekend(date) && MENU[cur[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.MAIN_DISH) return acc + CONSTANT.WEEKEND_DISCOUNT * cur[CONSTANT.QUANTITY_INDEX];
       return acc;
     }, CONSTANT.ACC_INITIAL);
   }
   
   static calculateWeekdayDiscount(order, date) {
     return order.reduce((acc, cur) => {
-      if (this.isWeekday(date) && MENU[cur[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.DESSERT) return acc + CONSTANT.WEEKDAY_DISCOUNT;
+      if (this.isWeekday(date) && MENU[cur[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.DESSERT) return acc + CONSTANT.WEEKDAY_DISCOUNT * cur[CONSTANT.QUANTITY_INDEX];
       return acc;
     }, CONSTANT.ACC_INITIAL);
   }
