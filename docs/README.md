@@ -64,8 +64,10 @@
     ┗ Message.js
   ┗ validation
     ┗ Validation.js
+  ┗ view
+    ┗ InputView.js
+    ┗ OutputView.js
   ┣ App.js
-  ┣ index.js
-  ┣ InputView.js
-  ┗ OutputView.js
+  ┣ Bill.js
+  ┗ index.js
 ```
