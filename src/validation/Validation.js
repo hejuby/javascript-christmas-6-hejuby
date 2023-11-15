@@ -42,7 +42,7 @@ class Validation {
   }
 
   static checkFormatAndReturnSplitOrder(input) {
-    return input.split(",").map((el) => el.split("-").map((el, index) => {
+    return input.split(CONSTANT.ORDER_SEPERATOR).map((el) => el.split(CONSTANT.FORMAT_SEPERATOR).map((el, index) => {
       if (index === CONSTANT.QUANTITY_INDEX) return Number(el);
       if (index > CONSTANT.INDEX_LIMIT) throw new Error(ERROR.ORDER);
       return el;
@@ -51,7 +51,7 @@ class Validation {
 
   static checkIfOrderHasMenus(orders) {
     orders.forEach((order) => {
-      if (typeof MENU[order[0]] === CONSTANT.UNDEFINED) throw new Error(ERROR.ORDER);
+      if (typeof MENU[order[CONSTANT.MENU_INDEX]] === CONSTANT.UNDEFINED) throw new Error(ERROR.ORDER);
       if (!Number.isInteger(order[CONSTANT.QUANTITY_INDEX]) || order[CONSTANT.QUANTITY_INDEX] < CONSTANT.MIN_QUANTITY) throw new Error(ERROR.ORDER);
     });
   }
