@@ -1,4 +1,4 @@
-import { MENU } from '../constant/Constant.js';
+import { MENU, CONSTANT } from '../constant/Constant.js';
 import { ERROR } from '../constant/Message.js';
 
 class Validation {
@@ -22,7 +22,7 @@ class Validation {
   }
 
   static checkIfDateBlank(input) {
-    if (input.trim().length === 0) throw new Error(ERROR.DATE);
+    if (input.trim().length === CONSTANT.BLANK_STRING_LENGTH) throw new Error(ERROR.DATE);
   }
 
   static checkIfDateNumber(date) {
@@ -34,38 +34,38 @@ class Validation {
   }
 
   static checkIfDateInRange(date) {
-    if (date < 1 || date > 31) throw new Error(ERROR.DATE);
+    if (date < CONSTANT.START_DATE || date > CONSTANT.END_DATE) throw new Error(ERROR.DATE);
   }
 
   static checkIfOrderBlank(input) {
-    if (input.trim().length === 0) throw new Error(ERROR.ORDER);
+    if (input.trim().length === CONSTANT.BLANK_STRING_LENGTH) throw new Error(ERROR.ORDER);
   }
 
   static checkFormatAndReturnSplitOrder(input) {
     return input.split(",").map((el) => el.split("-").map((el, index) => {
-      if (index === 1) return Number(el);
-      if (index > 1) throw new Error(ERROR.ORDER);
+      if (index === CONSTANT.QUANTITY_INDEX) return Number(el);
+      if (index > CONSTANT.INDEX_LIMIT) throw new Error(ERROR.ORDER);
       return el;
     }));
   }
 
   static checkIfOrderHasMenus(orders) {
     orders.forEach((order) => {
-      if (typeof MENU[order[0]] === "undefined") throw new Error(ERROR.ORDER);
-      if (!Number.isInteger(order[1]) || order[1] < 1) throw new Error(ERROR.ORDER);
+      if (typeof MENU[order[0]] === CONSTANT.UNDEFINED) throw new Error(ERROR.ORDER);
+      if (!Number.isInteger(order[CONSTANT.QUANTITY_INDEX]) || order[CONSTANT.QUANTITY_INDEX] < CONSTANT.MIN_QUANTITY) throw new Error(ERROR.ORDER);
     });
   }
 
   static checkIfOrderDuplicate(orders) {
-    if (orders.length !== new Set(orders.map((order) => order[0])).size) throw new Error(ERROR.ORDER);
+    if (orders.length !== new Set(orders.map((order) => order[CONSTANT.MENU_INDEX])).size) throw new Error(ERROR.ORDER);
   }
 
   static checkIfOrderOnlyDrink(orders) {
-    if (orders.length === orders.filter((order) => MENU[order[0]].TYPE === "음료").length) throw new Error(ERROR.ORDER);
+    if (orders.length === orders.filter((order) => MENU[order[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.DRINK).length) throw new Error(ERROR.ORDER);
   }
 
   static checkIfOrderMoreThanLimit(orders) {
-    if (orders.reduce((acc, cur) => acc + cur[1], 0) > 20) throw new Error(ERROR.ORDER);
+    if (orders.reduce((acc, cur) => acc + cur[CONSTANT.QUANTITY_INDEX], CONSTANT.ACC_INITIAL) > CONSTANT.ORDER_LIMIT) throw new Error(ERROR.ORDER);
   }
 };
 

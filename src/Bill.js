@@ -1,20 +1,20 @@
-import { MENU } from './constant/Constant.js';
+import { MENU, CONSTANT } from './constant/Constant.js';
 
 class Bill {
   static calculateTotalPrice(order) {
-    return order.reduce((acc, cur) => acc + MENU[cur[0]].PRICE * cur[1], 0);
+    return order.reduce((acc, cur) => acc + MENU[cur[CONSTANT.MENU_INDEX]].PRICE * cur[CONSTANT.QUANTITY_INDEX], CONSTANT.ACC_INITIAL);
   }
 
   static isDDayDiscount(date) {
-    return date <= 25;
+    return date <= CONSTANT.DDAY;
   }
 
   static isGiveaway(order) {
-    return this.calculateTotalPrice(order) >= 120000;
+    return this.calculateTotalPrice(order) >= CONSTANT.GIVEAWAY_CONDITION;
   }
 
   static isWeekend(date) {
-    return date % 7 === 1 || date % 7 === 2;
+    return date % CONSTANT.DAYS_OF_WEEK === CONSTANT.FRIDAY || date % CONSTANT.DAYS_OF_WEEK === CONSTANT.SATURDAY;
   }
 
   static isWeekday(date) {
@@ -23,14 +23,14 @@ class Bill {
 
   static hasMainMenu(orders) {
     orders.forEach((order) => {
-      if (MENU[order[0]].TYPE === "메인") return true;
+      if (MENU[order[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.MAIN_DISH) return true;
     });
     return false;
   }
 
   static hasDessertMenu(orders) {
     orders.forEach((order) => {
-      if (MENU[order[0]].TYPE === "디저트") return true;
+      if (MENU[order[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.DESSERT) return true;
     });
     return false;
   }
@@ -44,7 +44,7 @@ class Bill {
   }
 
   static isSpecialDay(date) {
-    return date % 7 === 3 || date === 25;
+    return date % CONSTANT.DAYS_OF_WEEK === CONSTANT.SUNDAY || date === CONSTANT.DDAY;
   }
 
   static isDiscount(order, date) {
@@ -52,32 +52,32 @@ class Bill {
   }
 
   static calculateDDayDiscount(date) {
-    if (this.isDDayDiscount(date)) return 1000 + (date-1) * 100;
-    return 0;
+    if (this.isDDayDiscount(date)) return CONSTANT.DDAY_DISCOUNT_START + (date-1) * CONSTANT.DDAY_DISCOUNT_PER_DAY;
+    return CONSTANT.NO_DISCOUNT;
   }
 
   static calculateGiveaway(order) {
-    if (this.isGiveaway(order)) return "샴페인 1개";
-    return "없음";
+    if (this.isGiveaway(order)) return CONSTANT.GIVEAWAY;
+    return CONSTANT.NO_GIVEAWAY;
   }
 
   static calculateWeekendDiscount(order, date) {
     return order.reduce((acc, cur) => {
-      if (this.isWeekend(date) && MENU[cur[0]].TYPE === "메인") return acc + 2023;
+      if (this.isWeekend(date) && MENU[cur[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.MAIN_DISH) return acc + CONSTANT.WEEKEND_DISCOUNT;
       return acc;
-    }, 0);
+    }, CONSTANT.ACC_INITIAL);
   }
   
   static calculateWeekdayDiscount(order, date) {
     return order.reduce((acc, cur) => {
-      if (this.isWeekday(date) && MENU[cur[0]].TYPE === "디저트") return acc + 2023;
+      if (this.isWeekday(date) && MENU[cur[CONSTANT.MENU_INDEX]].TYPE === CONSTANT.DESSERT) return acc + CONSTANT.WEEKDAY_DISCOUNT;
       return acc;
-    }, 0);
+    }, CONSTANT.ACC_INITIAL);
   }
 
   static calculateSpecialDiscount(date) {
-    if (this.isSpecialDay(date)) return 1000;
-    return 0;
+    if (this.isSpecialDay(date)) return CONSTANT.SPECIAL_DAY_DISCOUNT;
+    return CONSTANT.NO_DISCOUNT;
   }
 
   static calculateTotalDiscount(order, date) {
@@ -85,16 +85,16 @@ class Bill {
   }
 
   static calculateTotalReward(order, date) {
-    if (this.isGiveaway(order)) return this.calculateTotalDiscount(order, date) + 25000;
+    if (this.isGiveaway(order)) return this.calculateTotalDiscount(order, date) + CONSTANT.GIVEAWAY_PRICE;
     return this.calculateTotalDiscount(order, date);
   }
 
   static calculateEventBadge(order, date) {
     const TotalReward = this.calculateTotalReward(order, date);
-    if (TotalReward >= 20000) return "산타";
-    if (TotalReward >= 10000) return "트리";
-    if (TotalReward >= 5000) return "별";
-    return "없음";
+    if (TotalReward >= CONSTANT.BADGE_GOLD_CONDITION) return CONSTANT.BADGE_GOLD;
+    if (TotalReward >= CONSTANT.BADGE_SILVER_CONDITION) return CONSTANT.BADGE_SILVER;
+    if (TotalReward >= CONSTANT.BADGE_BRONZE_CONDITION) return CONSTANT.BADGE_BRONZE;
+    return CONSTANT.NO_BADGE;
   }
 }
 
