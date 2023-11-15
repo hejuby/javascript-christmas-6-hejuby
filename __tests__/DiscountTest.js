@@ -29,7 +29,7 @@ describe("디스카운트 로직 테스트", () => {
     expect(Bill.calculateTotalReward(orders, christmas)).toBe(31423);
   });
 
-  test("총혜택 금액에 따라서 이벤트 뱃지를 부여한다.", () => {
+  test("총혜택 금액에 따라서 이벤트 배지를 부여한다.", () => {
     expect(Bill.calculateEventBadge(orders, christmas)).toEqual("산타");
     expect(Bill.calculateEventBadge(orders, weekend)).toEqual("산타");
   });
