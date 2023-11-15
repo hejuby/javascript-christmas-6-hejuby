@@ -3,6 +3,7 @@ import OutputView from "../src/view/OutputView.js";
 
 describe("출력 클래스 테스트", () => {
   const orders = [['양송이수프', 2], ['티본스테이크', 1], ['해산물파스타', 1], ['초코케이크', 1], ['레드와인', 1]];
+  const single = [['타파스', 1], ['크리스마스파스타', 1], ['제로콜라', 1]];
   const christmas = 25;
   const weekend = 29;
   const output = [
@@ -42,6 +43,14 @@ describe("출력 클래스 테스트", () => {
     OutputView.printPreview(orders, christmas);
     output.forEach((line) => {
       expect(spyFn).toHaveBeenCalledWith(expect.stringContaining(line));
-    })
+    });
+  });
+
+  test("적용 이벤트가 없을 경우 '없음' 출력 확인", () => {
+    spyFn.mockClear();
+    OutputView.printGiveaway(single);
+    OutputView.printEventBadge(single, weekend);
+    expect(spyFn).toHaveBeenCalledWith(expect.stringContaining("없음"));
+    expect(spyFn).toHaveBeenCalledWith(expect.stringContaining("없음"));
   });
 });
